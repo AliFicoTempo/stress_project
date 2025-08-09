@@ -1,115 +1,104 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { login } from "../lib/api";
+import Head from "next/head";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
+  const router = useRouter();
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  const WA_LINK = "https://wa.me/6281318138660"; // Ganti nomor WA sesuai di file docx Anda
 
-export default function Home() {
+  async function submit(e) {
+    e.preventDefault();
+    setErr("");
+    if (!username || !password) return setErr("Isi username & password");
+    const res = await login(username.trim(), password);
+    if (res.ok) {
+      localStorage.setItem("sp_user", JSON.stringify(res));
+      router.push("/dashboard");
+    } else {
+      setErr(res.message || "Login gagal");
+    }
+  }
+
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <Head>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet" />
+      </Head>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-gray-900 to-black animate-gradient">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 w-full max-w-md shadow-2xl">
+          <h1
+            className="text-3xl font-bold mb-6 text-center text-white"
+            style={{ fontFamily: "Orbitron, sans-serif" }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Stress Project — Login
+          </h1>
+
+          <form onSubmit={submit} className="space-y-4">
+            <div>
+              <label className="block text-sm text-gray-300">Username</label>
+              <input
+                className="mt-1 w-full bg-white/20 text-white border border-white/30 px-3 py-2 rounded focus:outline-none focus:border-cyan-400"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-300">Password</label>
+              <input
+                type="password"
+                className="mt-1 w-full bg-white/20 text-white border border-white/30 px-3 py-2 rounded focus:outline-none focus:border-cyan-400"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            {err && <div className="text-sm text-red-400">{err}</div>}
+
+            <button
+              className="w-full py-2 rounded text-white font-semibold bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50"
+            >
+              Login
+            </button>
+
+            <div className="text-xs text-center mt-4 text-gray-300 space-x-3">
+              <a
+                href={`${WA_LINK}?text=Kepada Paduka yang Mulia, ijinkan hamba untuk mencantumkan nama hamba yang rendah ini sebagai salah satu pengikutmu yang setia. Hamba bersumpah akan setia dan tetap menjunjung tinggi nilai integritas kepada Paduka.🙇‍♂️`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cyan-400 underline"
+              >
+                Register
+              </a>
+              <span>|</span>
+              <a
+                href={`${WA_LINK}?text=Wahai Paduka Yang Mulia, ma'afkan hamba yang ceroboh lagi lalai ini. Hamba secara tidak sengaja telah lupa kata kunci, mohon dengan penuh kesopanan agar sudi kiranya Paduka memberi pencerahaan kepada hamba.🙇‍♂️`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-cyan-400 underline"
+              >
+                Lupa Password
+              </a>
+            </div>
+          </form>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <style jsx global>{`
+          @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          .animate-gradient {
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+          }
+        `}</style>
+      </div>
+    </>
   );
 }
