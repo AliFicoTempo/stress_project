@@ -12,21 +12,21 @@ import StatCard from "../components/StatCard";
 import RankingCard from "../components/RankingCard";
 import ShipmentCharts from "../components/ShipmentCharts";
 
-// Style khusus untuk dropdown agar sesuai dengan tema gelap Anda
+// Style untuk dropdown yang disesuaikan dengan tema baru
 const multiSelectStyles = {
-  control: (styles) => ({ ...styles, backgroundColor: '#374151', border: '1px solid #4B5563', color: 'white' }),
-  menu: (styles) => ({ ...styles, backgroundColor: '#1F2937' }),
+  control: (styles) => ({ ...styles, backgroundColor: 'white', border: '1px solid #d1d5db', color: '#1f2937' }),
+  menu: (styles) => ({ ...styles, backgroundColor: 'white', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' }),
   option: (styles, { isFocused }) => ({
     ...styles,
-    backgroundColor: isFocused ? '#4B5563' : '#1F2937',
-    color: 'white',
-    ':active': { ...styles[':active'], backgroundColor: '#6B7280' },
+    backgroundColor: isFocused ? '#f0f9ff' : 'white',
+    color: '#1f2937',
+    ':active': { ...styles[':active'], backgroundColor: '#e0f2fe' },
   }),
-  multiValue: (styles) => ({ ...styles, backgroundColor: '#06B6D4' }),
-  multiValueLabel: (styles) => ({ ...styles, color: 'white' }),
-  multiValueRemove: (styles) => ({ ...styles, color: 'white', ':hover': { backgroundColor: '#EF4444', color: 'white' } }),
-  input: (styles) => ({...styles, color: 'white'}),
-  singleValue: (styles) => ({...styles, color: 'white'}),
+  multiValue: (styles) => ({ ...styles, backgroundColor: '#e0f2fe' }),
+  multiValueLabel: (styles) => ({ ...styles, color: '#0369a1' }),
+  multiValueRemove: (styles) => ({ ...styles, color: '#0369a1', ':hover': { backgroundColor: '#bae6fd' } }),
+  input: (styles) => ({...styles, color: '#1f2937'}),
+  singleValue: (styles) => ({...styles, color: '#1f2937'}),
 };
 
 export default function Dashboard() {
@@ -153,68 +153,130 @@ export default function Dashboard() {
         router.push("/");
     }
 
-    if (!user) return <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">Loading session...</div>;
+    if (!user) return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Memuat dashboard...</p>
+        </div>
+      </div>
+    );
 
     return (
         <>
             <Head><title>Dashboard | STRESS</title></Head>
-            <div className="flex min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black animate-gradient text-white">
+            <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900">
                 <Sidebar />
                 <main className="flex-1 lg:pl-64">
                     <div className="p-6">
                         {isAddModalOpen && (
-                            <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
-                                <div className="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
-                                    <h2 className="text-xl font-bold mb-4 text-cyan-400">INPUT SHIPMENT BARU</h2>
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                                <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg border border-gray-200">
+                                    <h2 className="text-xl font-bold mb-4 text-blue-600">INPUT SHIPMENT BARU</h2>
                                     <ShipmentForm onSubmit={handleAdd} user={user} allUsers={allUsersForForm} />
-                                    <button onClick={() => setIsAddModalOpen(false)} className="w-full mt-4 py-2 bg-gray-600 hover:bg-gray-500 rounded font-semibold transition-colors">Batal</button>
+                                    <button 
+                                      onClick={() => setIsAddModalOpen(false)} 
+                                      className="w-full mt-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-semibold transition-colors"
+                                    >
+                                      Batal
+                                    </button>
                                 </div>
                             </div>
                         )}
                         {editingShipment && (
-                            <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 p-4">
-                                <div className="bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg border border-gray-700">
-                                    <h2 className="text-xl font-bold mb-4 text-yellow-400">EDIT SHIPMENT</h2>
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+                                <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg border border-gray-200">
+                                    <h2 className="text-xl font-bold mb-4 text-blue-600">EDIT SHIPMENT</h2>
                                     <ShipmentForm onSubmit={handleUpdate} user={user} allUsers={allUsersForForm} initialData={editingShipment} />
-                                    <button onClick={() => setEditingShipment(null)} className="w-full mt-4 py-2 bg-gray-600 hover:bg-gray-500 rounded font-semibold transition-colors">Batal</button>
+                                    <button 
+                                      onClick={() => setEditingShipment(null)} 
+                                      className="w-full mt-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-semibold transition-colors"
+                                    >
+                                      Batal
+                                    </button>
                                 </div>
                             </div>
                         )}
                         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6">
-                            <div><h1 className="text-3xl font-bold" style={{ fontFamily: "Orbitron, sans-serif" }}>Selamat datang, {user?.name}</h1><p className="text-sm text-gray-400">STRESS | Shipment Tracking Report & Engagement Support System</p></div>
+                            <div>
+                                <h1 className="text-2xl font-bold text-gray-900">Selamat datang, {user?.name}</h1>
+                                <p className="text-sm text-gray-600">STRESS | Shipment Tracking Report & Engagement Support System</p>
+                            </div>
                             <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                                <button onClick={() => setIsAddModalOpen(true)} className="px-5 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50">Input Shipment</button>
-                                <button onClick={logout} className="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg transition">Logout</button>
+                                <button 
+                                    onClick={() => setIsAddModalOpen(true)} 
+                                    className="px-5 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 transition-all duration-300 shadow"
+                                >
+                                    Input Shipment
+                                </button>
+                                <button 
+                                  onClick={logout} 
+                                  className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg transition"
+                                >
+                                  Logout
+                                </button>
                             </div>
                         </header>
-                        {loading ? (<div className="text-center p-10">Memuat data awal...</div>) : (
+                        {loading ? (
+                            <div className="text-center p-10 text-gray-600">Memuat data awal...</div>
+                        ) : (
                             <>
                                 <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                                    <StatCard title="TOTAL HK" value={filteredData.summary.totalHK} /><StatCard title="TOTAL DP" value={filteredData.summary.totalDP} /><StatCard title="TOTAL TERKIRIM" value={filteredData.summary.totalTerkirim} /><StatCard title="TOTAL GAGAL" value={filteredData.summary.totalGagal} />
+                                    <StatCard title="TOTAL HK" value={filteredData.summary.totalHK} />
+                                    <StatCard title="TOTAL DP" value={filteredData.summary.totalDP} />
+                                    <StatCard title="TOTAL TERKIRIM" value={filteredData.summary.totalTerkirim} />
+                                    <StatCard title="TOTAL GAGAL" value={filteredData.summary.totalGagal} />
                                 </section>
                                 <section className="space-y-6 mb-6">
                                     <ShipmentCharts shipmentData={filteredData.shipments} summaryData={filteredData.summary} />
                                     {user.status === 'admin' && <RankingCard rankingData={filteredData.ranking} />}
                                 </section>
-                                <section className="bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-xl shadow-lg">
+                                <section className="bg-white border border-gray-200 p-4 rounded-xl shadow">
                                     <div className="flex flex-col md:flex-row justify-between items-center mb-4">
-                                        <h3 className="font-semibold text-lg mb-2 md:mb-0">Rekap Shipment</h3>
+                                        <h3 className="font-semibold text-lg mb-2 md:mb-0 text-gray-900">Rekap Shipment</h3>
                                         <div className="flex flex-wrap gap-2 items-center w-full md:w-auto">
-                                            <input type="date" name="start" value={filters.start} onChange={handleDateChange} className="border border-white/30 bg-gray-700 px-2 py-1 rounded placeholder-gray-300"/>
-                                            <input type="date" name="end" value={filters.end} onChange={handleDateChange} className="border border-white/30 bg-gray-700 px-2 py-1 rounded placeholder-gray-300"/>
+                                            <input 
+                                                type="date" 
+                                                name="start" 
+                                                value={filters.start} 
+                                                onChange={handleDateChange} 
+                                                className="border border-gray-300 bg-white px-3 py-2 rounded text-gray-700 text-sm"
+                                            />
+                                            <input 
+                                                type="date" 
+                                                name="end" 
+                                                value={filters.end} 
+                                                onChange={handleDateChange} 
+                                                className="border border-gray-300 bg-white px-3 py-2 rounded text-gray-700 text-sm"
+                                            />
                                             {user.status === 'admin' && (
-                                                <div className="w-full md:w-64"><Select isMulti name="names" options={userList} className="basic-multi-select" classNamePrefix="select" placeholder="Filter Nama..." styles={multiSelectStyles} onChange={handleMultiSelectChange} /></div>
+                                                <div className="w-full md:w-64">
+                                                    <Select 
+                                                        isMulti 
+                                                        name="names" 
+                                                        options={userList} 
+                                                        className="basic-multi-select" 
+                                                        classNamePrefix="select" 
+                                                        placeholder="Filter Nama..." 
+                                                        styles={multiSelectStyles} 
+                                                        onChange={handleMultiSelectChange} 
+                                                    />
+                                                </div>
                                             )}
                                         </div>
                                     </div>
-                                    <ShipmentTable data={filteredData.shipments} onDelete={handleDelete} onEdit={setEditingShipment} isAdmin={user.status === 'admin'} />
+                                    <ShipmentTable 
+                                      data={filteredData.shipments} 
+                                      onDelete={handleDelete} 
+                                      onEdit={setEditingShipment} 
+                                      isAdmin={user.status === 'admin'} 
+                                    />
                                 </section>
                             </>
                         )}
                     </div>
                 </main>
             </div>
-            <style jsx global>{`@keyframes gradient {0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }} .animate-gradient { background-size: 400% 400%; animation: gradient 15s ease infinite; }`}</style>
         </>
     );
 }
