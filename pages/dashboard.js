@@ -164,11 +164,18 @@ export default function Dashboard() {
 
     return (
         <>
-            <Head><title>Dashboard | STRESS</title></Head>
-            <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 text-gray-900">
+            <Head>
+                <title>Dashboard | STRESS</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+            </Head>
+            
+            {/* Background layer untuk memastikan gradient penuh */}
+            <div className="fixed inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 -z-10" />
+            
+            <div className="flex min-h-screen text-gray-900">
                 <Sidebar />
                 <main className="flex-1 lg:pl-64">
-                    <div className="p-6">
+                    <div className="p-4 md:p-6">
                         {isAddModalOpen && (
                             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
                                 <div className="bg-white p-6 rounded-xl shadow-xl w-full max-w-lg border border-gray-200">
@@ -221,7 +228,7 @@ export default function Dashboard() {
                             <div className="text-center p-10 text-gray-600">Memuat data awal...</div>
                         ) : (
                             <>
-                                <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                                <section className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
                                     <StatCard title="TOTAL HK" value={filteredData.summary.totalHK} />
                                     <StatCard title="TOTAL DP" value={filteredData.summary.totalDP} />
                                     <StatCard title="TOTAL TERKIRIM" value={filteredData.summary.totalTerkirim} />
@@ -274,6 +281,30 @@ export default function Dashboard() {
                                 </section>
                             </>
                         )}
+                    </div>
+                    
+                    {/* Mobile bottom navigation */}
+                    <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 shadow-lg">
+                        <div className="flex justify-around">
+                            <button 
+                                onClick={() => setIsAddModalOpen(true)} 
+                                className="p-2 flex flex-col items-center text-blue-600"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                <span className="text-xs mt-1">Input</span>
+                            </button>
+                            <button 
+                                onClick={logout} 
+                                className="p-2 flex flex-col items-center text-gray-600"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                <span className="text-xs mt-1">Logout</span>
+                            </button>
+                        </div>
                     </div>
                 </main>
             </div>
