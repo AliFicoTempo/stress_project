@@ -33,7 +33,7 @@ export default function LoginPage() {
       localStorage.setItem("sp_user", JSON.stringify(res));
       router.push("/dashboard");
     } else {
-      setErr(res.message || "Login failed");
+      setErr(res.message || "Login gagal");
       setOpenModal(false);
     }
   }
@@ -129,7 +129,7 @@ export default function LoginPage() {
       <Modal
         open={openModal}
         onClose={() => setOpenModal(false)}
-        title="Processing Login"
+        title="Proses Autentikasi"
       >
         <p className="text-sm text-slate-600">
           Sedang autentikasi data. Mohon ditunggu...
