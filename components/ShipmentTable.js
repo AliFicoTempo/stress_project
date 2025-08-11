@@ -51,34 +51,34 @@ export default function ShipmentTable({ data, onDelete, onEdit, isAdmin }) {
     return pageGroup;
   };
 
-  return (
+return (
     <>
       <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-300 text-black">
             <tr>
-              {isAdmin && <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('nama')}>Nama {getSortIcon('nama')}</th>}
-              <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('tanggal')}>Tanggal {getSortIcon('tanggal')}</th>
-              <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('shipment')}>Shipment {getSortIcon('shipment')}</th>
-              <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('jumlah')}>Jml Toko {getSortIcon('jumlah')}</th>
-              <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('terkirim')}>Terkirim {getSortIcon('terkirim')}</th>
-              <th className="p-3 cursor-pointer text-left text-xs font-medium text-gray-500 uppercase tracking-wider" onClick={() => requestSort('gagal')}>Gagal {getSortIcon('gagal')}</th>
-              <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alasan</th>
-              <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+              {isAdmin && <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[15%]">Nama</th>}
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[12%]">Tanggal</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[13%]">Shipment</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[10%]">Jml Toko</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[10%]">Terkirim</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[10%]">Gagal</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[20%]">Alasan</th>
+              <th className="p-3 text-center text-xs font-bold uppercase tracking-wider w-[10%]">Aksi</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-300">
             {currentRows.map((row) => (
               <tr key={row.id} className="hover:bg-gray-50">
-                {isAdmin && <td className="p-3 max-w-0 truncate text-gray-900">{row.nama}</td>}
-                <td className="p-3 text-gray-500">{new Date(row.tanggal).toLocaleDateString("id-ID")}</td>
-                <td className="p-3 text-gray-900">{row.shipment}</td>
-                <td className="p-3 text-gray-900">{row.jumlah}</td>
-                <td className="p-3 text-green-600">{row.terkirim}</td>
-                <td className="p-3 font-medium text-yellow-600">{row.gagal}</td>
-                <td className="p-3 max-w-0 truncate text-gray-500" title={row.alasan}>{row.alasan}</td>
-                <td className="p-3">
-                  <div className="flex space-x-3">
+                {isAdmin && <td className="p-3 max-w-0 truncate text-gray-500 text-left">{row.nama}</td>}
+                <td className="p-3 text-gray-500 text-center">{new Date(row.tanggal).toLocaleDateString("id-ID")}</td>
+                <td className="p-3 text-gray-500 text-center">{row.shipment}</td>
+                <td className="p-3 text-gray-500 text-center">{row.jumlah}</td>
+                <td className="p-3 text-green-500 text-center">{row.terkirim}</td>
+                <td className="p-3 font-medium text-yellow-500 text-center">{row.gagal}</td>
+                <td className="p-3 max-w-0 truncate text-gray-500 text-left" title={row.alasan}>{row.alasan}</td>
+                <td className="p-3 text-center">
+                  <div className="flex justify-center space-x-3">
                     <button 
                       onClick={() => onEdit(row)} 
                       className="text-blue-600 hover:text-blue-800 transition-colors"
