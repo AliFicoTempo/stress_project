@@ -47,13 +47,25 @@ export default function Dashboard() {
     const filteredData = useMemo(() => {
         if (!masterShipments) return { shipments: [], summary: masterSummary, ranking: masterRanking };
         const selectedNames = filters.names.map(opt => opt.value);
+          function parseDate(dateStr) {
+          if (!dateStr) return null;
+          const [day, month, year] = dateStr.split('/').map(Number);
+          return new Date(year, month - 1, day); // JS: bulan mulai dari 0
+        }
         const filtered = masterShipments.filter(shipment => {
-            let keep = true;
-            if (filters.start && shipment.tanggal < filters.start) keep = false;
-            if (filters.end && shipment.tanggal > filters.end) keep = false;
-            if (user?.status === 'admin' && selectedNames.length > 0 && !selectedNames.includes(shipment.nama)) keep = false;
-            return keep;
+            const shipmentDate = new Date(shipment.tanggal);
+            const startDate = filters.start ? new Date(filters.start) : null;
+            const endDate = filters.end ? new Date(filters.end) : null;
+            // Jika ada filter tanggal
+            if (filters.start && shipment.tanggal < filters.start) return false;
+            if (filters.end && shipment.tanggal > filters.end) return false;
+            // Jika user admin & filter nama aktif
+            if (user?.status === 'admin' && filters.names.length > 0 &&
+                !filters.names.map(opt => opt.value).includes(shipment.nama))
+                {return false;}
+            return true; // ✅ shipment lolos filter
         });
+
         const summary = filtered.reduce((acc, curr) => {
             acc.totalHK += 1;
             acc.totalDP += curr.jumlah;
